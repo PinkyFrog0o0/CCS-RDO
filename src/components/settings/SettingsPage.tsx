@@ -1,39 +1,20 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useMemo } from "react";
 import { Loader2 } from "lucide-react";
 import { toast } from "sonner";
 import { LanguageSettings } from "@/components/settings/LanguageSettings";
 import { ThemeSettings } from "@/components/settings/ThemeSettings";
 import { AppVisibilitySettings } from "@/components/settings/AppVisibilitySettings";
-import { AboutSection } from "@/components/settings/AboutSection";
 import { useSettings } from "@/hooks/useSettings";
 import { useTranslation } from "react-i18next";
 
-interface SettingsDialogProps {
-  open: boolean;
-  onOpenChange: (open: boolean) => void;
-  defaultTab?: string;
-}
-
-export function SettingsPage({
-  open,
-  defaultTab = "general",
-}: SettingsDialogProps) {
+export function SettingsPage() {
   const { t } = useTranslation();
   const {
     settings,
     isLoading,
-    isPortable,
     updateSettings,
     autoSaveSettings,
   } = useSettings();
-
-  const [activeTab, setActiveTab] = useState<string>("general");
-
-  useEffect(() => {
-    if (open) {
-      setActiveTab(defaultTab);
-    }
-  }, [open, defaultTab]);
 
   const handleAutoSave = useCallback(
     async (updates: Record<string, unknown>) => {
@@ -72,7 +53,6 @@ export function SettingsPage({
             settings={settings}
             onChange={handleAutoSave}
           />
-          <AboutSection isPortable={isPortable} />
         </div>
       ) : null}
     </div>
